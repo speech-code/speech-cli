@@ -36,6 +36,29 @@ Once installed, you can run the tool from anywhere:
 speech
 ```
 
+#### Installing uv (if not already installed)
+
+```bash
+# On macOS and Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# On Windows
+powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+
+# Or with pip
+pip install uv
+```
+
+#### For Windows Users
+
+For the best experience, use Windows Terminal instead of the legacy Command Prompt. You can install it via:
+
+```bash
+winget install --id Microsoft.WindowsTerminal -e
+```
+
+Or download it from the [Microsoft Store](https://www.microsoft.com/store/productId/9N0DX20HK701).
+
 ## Contributing
 
 Contributions are welcome. Please read the repository's CONTRIBUTING.md at the project root for guidelines on reporting issues, proposing changes, and submitting pull requests.
