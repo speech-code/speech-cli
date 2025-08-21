@@ -1,0 +1,26 @@
+repos:
+  - repo: local
+    hooks:
+      - id: export-requirements
+        name: Export requirements files
+        entry: bash -c "uv export --format requirements-txt --no-hashes --output-file requirements.txt --no-dev && uv export > requirements-dev.txt && git add requirements.txt requirements-dev.txt"
+        language: system
+        pass_filenames: false
+        # Only run when pyproject.toml changes
+        files: pyproject.toml
+        # Add automatic staging of the created files
+        stages: [pre-commit]
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    # Ruff version.
+    rev: v0.11.5
+    hooks:
+      # Run the linter.
+      - id: ruff
+        args: [--fix]
+        stages: [pre-commit]
+        verbose: true
+      # Run the formatter.
+      - id: ruff-format
+        stages: [pre-commit]
+        verbose: true

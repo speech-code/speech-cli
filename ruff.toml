@@ -1,0 +1,49 @@
+target-version = "py313"
+extend-exclude = []
+show-fixes = true
+
+[lint]
+select = [
+    # pycodestyle
+    "E",
+    # Pyflakes
+    "F",
+    # pyupgrade
+    "UP",
+    # flake8-bugbear
+    "B",
+    # flake8-simplify
+    "SIM",
+    # isort
+    "I",
+    "ARG",
+    "C4",
+    "A",
+    "FA",
+    "COM818",
+    "ISC",
+    "ICN",
+    "LOG",
+    "G",
+    "Q",
+    "T20",
+    "PT",
+    "PL",
+    "PTH",
+    "N",
+    "PERF",
+    "W",
+    "DOC",
+    "D",
+    "TID",
+    "TD",
+    "LOG",
+]
+
+ignore = ["D100", "D104", "D107", "TD003", "PLC0415"]
+
+[lint.per-file-ignores]
+
+[format]
+docstring-code-format = true
+docstring-code-line-length = "dynamic"

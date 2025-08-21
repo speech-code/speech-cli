@@ -1,0 +1,165 @@
+MainContent {
+    height: 100%;
+    width: 100%;
+    margin: 1 0;
+    padding: 0 0;
+
+}
+
+Input {
+    height: 1;
+    box-sizing: content-box;
+}
+
+ConfigureProvider {
+  width: auto;
+  height: auto;
+  background: $surface;
+  padding: 2;
+  content-align: center middle;
+  # align: center middle;
+}
+
+ConfigureProvider > Input {
+  width: 16;
+}
+
+ConfigureProvider > Select {
+  width: 24;
+}
+
+AgentResponse {
+  max-width: 100%;
+  padding: 1;
+  height: auto;
+  min-height: 4;
+  margin-bottom: 1;
+  margin-right: 8;
+}
+
+
+ShowToolCall > LoadingIndicator {
+  background: $surface;
+  position: absolute;
+  offset: 86% 1;
+}
+
+LoadingIndicator {
+  background: $background 0%;
+  width: 100%;
+  height: auto;
+  content-align: left top;
+}
+
+Markdown {
+  padding: 0 0;
+}
+
+_ToolArgs{
+  height: auto;
+}
+
+APIConfigModal {
+  align: center middle;
+}
+
+Collapsible > Vertical {
+  max-width: 100%;
+  padding: 0 0;
+  height: auto;
+  border: solid $primary;
+}
+
+.notificationContent {
+  background: $surface;
+  padding: 2;
+  width: auto;
+  max-width: 80%;
+}
+
+.graphProcesses > .graphInterruptBtns {
+  width: 100%;
+  align: left top;
+  height: auto;
+}
+
+.graphInterruptBtns > .accept {
+  background: $primary;
+}
+
+.graphInterruptBtns > .ignore {
+  color: $error;
+  # outline: solid $error;
+}
+
+.graphProcesses {
+  max-width: 100%;
+  padding: 0 0;
+  height: auto;
+  margin-bottom: 1;
+  border: solid $primary;
+}
+
+#apiConfigBtn {
+  align-horizontal: right;
+  width: 74;
+  height: auto;
+}
+
+#chatBox {
+  dock: bottom;
+  padding-left: 2;
+  margin-right: 14;
+  margin-left: 10;
+}
+
+#chatArea {
+  background: $background;
+  margin: 1 1;
+  margin-bottom: 1;
+  margin-left: 10;
+  scrollbar-gutter: stable;
+  scrollbar-size-vertical: 2;
+}
+
+.userMessageContainer {
+  width: 100%;
+  align: right top;
+  height: auto;
+  margin-right: 8;
+}
+
+.userMessage {
+  background: $surface;
+  max-width: 60%;
+  width: auto;
+  padding: 1;
+  height: auto;
+  margin-bottom: 1;
+}
+
+# .aiMessage {
+#   # display: none;
+# }
+
+.exception {
+  background: $background;
+  padding: 2;
+  width: auto;
+}
+
+.error {
+  outline: solid $error;
+}
+
+.success {
+  outline: solid $success;
+}
+
+# .started #stop {
+#   display: block;
+# }
+
+# .started #reset {
+#   visibility: hidden;
+# }
