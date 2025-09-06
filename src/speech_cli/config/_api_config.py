@@ -28,7 +28,11 @@ class _GetAvailableModels:
         self.api_key = api_key
 
         _method_name = provider.lower().replace(" ", "_")
-        self.models = getattr(self, _method_name)() or []
+        try:
+            self.models = getattr(self, _method_name)() or []
+        except Exception as err:
+            logger.warning("Error occurred while trying to retrieve models: %s", err)
+            self.models = []
         logger.debug("""The available models: %s""", self.models)
 
     def open_router(self):
