@@ -4,10 +4,13 @@
 annotated-types==0.7.0
     # via pydantic
 anthropic==0.64.0
-    # via langchain-anthropic
+    # via
+    #   langchain-anthropic
+    #   speech-cli
 anyio==4.9.0
     # via
     #   anthropic
+    #   google-genai
     #   httpx
     #   openai
 cachetools==5.5.2
@@ -37,6 +40,9 @@ google-auth==2.40.3
     # via
     #   google-ai-generativelanguage
     #   google-api-core
+    #   google-genai
+google-genai==1.32.0
+    # via speech-cli
 googleapis-common-protos==1.70.0
     # via
     #   google-api-core
@@ -56,6 +62,7 @@ httpcore==1.0.9
 httpx==0.28.1
     # via
     #   anthropic
+    #   google-genai
     #   langgraph-sdk
     #   langsmith
     #   openai
@@ -119,7 +126,9 @@ mdit-py-plugins==0.4.2
 mdurl==0.1.2
     # via markdown-it-py
 openai==1.100.1
-    # via langchain-openai
+    # via
+    #   langchain-openai
+    #   speech-cli
 orjson==3.11.1
     # via
     #   langgraph-sdk
@@ -154,6 +163,7 @@ pycparser==2.22 ; platform_python_implementation == 'PyPy'
 pydantic==2.11.7
     # via
     #   anthropic
+    #   google-genai
     #   langchain
     #   langchain-anthropic
     #   langchain-core
@@ -178,9 +188,11 @@ regex==2025.7.34
 requests==2.32.4
     # via
     #   google-api-core
+    #   google-genai
     #   langchain
     #   langsmith
     #   requests-toolbelt
+    #   speech-cli
     #   tiktoken
 requests-toolbelt==1.0.0
     # via langsmith
@@ -196,7 +208,9 @@ sniffio==1.3.1
 sqlalchemy==2.0.43
     # via langchain
 tenacity==9.1.2
-    # via langchain-core
+    # via
+    #   google-genai
+    #   langchain-core
 textual==5.2.0
     # via
     #   speech-cli
@@ -242,6 +256,7 @@ tree-sitter-yaml==0.7.1
 typing-extensions==4.14.1
     # via
     #   anthropic
+    #   google-genai
     #   langchain-core
     #   openai
     #   pydantic
@@ -256,6 +271,8 @@ uc-micro-py==1.0.3
     # via linkify-it-py
 urllib3==2.5.0
     # via requests
+websockets==15.0.1
+    # via google-genai
 xxhash==3.5.0
     # via langgraph
 zstandard==0.23.0

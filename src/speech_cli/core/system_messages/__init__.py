@@ -36,7 +36,8 @@ class _SystemMessages:
 
         if not file.exists():
             raise FileNotFoundError(
-                "No file named {name}.md found in the system messages directory."
+                f"No file named {name.upper()}.md found in the system messages"
+                " directory."
             )
 
         if name == "translator":

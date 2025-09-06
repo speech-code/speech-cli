@@ -1,62 +1,136 @@
+import json
+import logging
 from pathlib import Path
 
-from dotenv import dotenv_values, set_key
+from speech_cli.core.llm import LLM
+
+logger = logging.getLogger(__name__)
+
+_SUPPORTED_PROVIDERS = {
+    # "Open AI": {
+    #     # These will be provided in addition to the model and api key
+    #     # configuration, during model creation.
+    #     "model_provider": "openai",
+    # },
+    "Google Gemini": {"model_provider": "google_genai"},
+    # "Anthropic": {"model_provider": "anthropic"},
+    "Open Router": {
+        "model_provider": "openai",
+        "base_url": "https://openrouter.ai/api/v1",
+    },
+}
+
+
+class _GetAvailableModels:
+    """Retrieves available models for selected provided, and api key."""
+
+    def __init__(self, provider: str, api_key: str):
+        self.api_key = api_key
+
+        _method_name = provider.lower().replace(" ", "_")
+        self.models = getattr(self, _method_name)() or []
+        logger.debug("""The available models: %s""", self.models)
+
+    def open_router(self):
+        """Retrieve available models from open router."""
+        import requests
+
+        url = "https://openrouter.ai/api/v1/models"
+        response = requests.get(url)
+
+        status_code = 200
+        if response.status_code == status_code:
+            return [model["id"] for model in response.json()["data"]]
+
+    def google_gemini(self):
+        """Retrieve available models from google gemini."""
+        from google import genai
+
+        client = genai.Client(api_key=self.api_key)
+        available_models = client.models.list()
+
+        logger.debug("Google gemini models: %s", available_models)
+
+        return [model.name.split("/")[1] for model in available_models]
+
+    # TODO@chideracollins: Add support for the remaining providers
+    def open_ai(self):
+        """Retrieve available models from open ai."""
+        from openai import OpenAI
+
+        client = OpenAI(api_key=self.api_key)
+
+        _available_models = client.models.list()
+
+    def anthropic(self):
+        """Retrieve available models from anthropic."""
+        import anthropic
+
+        client = anthropic.Anthropic(api_key=self.api_key)
+
+        _available_models = client.models.list(limit=20)
 
 
 class APIConfig:
-    """ENV class for multiple model api configuration."""
-
-    _default_api_config = {
-        "OPENAI": ("gpt-4", "gpt-5"),
-        "ANTHROPIC": ("claude-4",),
-        "GOOGLE_GENAI": ("gemini-2.5-flash", "gemini-2.5-pro"),
-    }
+    """Api configuration class."""
 
     def __init__(self):
         self._speech_dir = Path.home() / ".speech"
-        self._env_file = self._speech_dir / ".env"
+        self._config_file = self._speech_dir / "api_config.json"
 
-        self._ensure_files_exist()
-
-        self._envs = self._load_env()
-
-    def _ensure_files_exist(self):
-        """Ensure the .speech directory and .env file exist."""
         self._speech_dir.mkdir(parents=True, exist_ok=True)
-        self._env_file.touch(exist_ok=True)
+        self._config_file.touch(exist_ok=True)
 
-    def _load_env(self):
-        """Load configuration from .env file."""
-        model_envs = {}
-        for provider, model_config in dotenv_values(self._env_file).items():
-            model_envs[provider.lower()] = model_config.split(", ")
-        return model_envs
+        try:
+            with self._config_file.open(encoding="utf-8") as f:
+                self.config: dict = json.load(f)
+        except json.JSONDecodeError:
+            self.config = None
 
-    def set_api_key(self, provider: str, model: str, api_key: str):
-        """Set the API key for a given provider in the .env file.
+        logger.debug("The retrieved config: %s", self.config)
 
-        Provider should be one of the supported providers.
+        if self.config:
+            LLM.create_model(self.config)
+
+    @property
+    def supported_providers(self) -> list[str]:
+        """Get a list of all the supported model providers."""
+        return sorted(_SUPPORTED_PROVIDERS.keys())
+
+    def get_models(self, provider: str, api_key: str) -> list[str]:
+        """Look up online for the available models given the provider and api key.
+
+        Args:
+            provider (str): Selected provider.
+            api_key (str): The api key.
+
+        Returns:
+            list[str]: Available models.
+
         """
-        provider_upper = provider.upper()
-        if provider_upper not in self._default_api_config:
-            raise ValueError(f"Provider '{provider}' is not supported.")
+        return sorted(_GetAvailableModels(provider, api_key).models)
 
-        set_key(self._env_file, provider_upper, f"{model}, {api_key}")
-        self._envs = self._load_env()
+    async def configure(self, provider: str, model: str, api_key: str):
+        """Store the api configuration in the api_config.json file."""
+        if provider not in _SUPPORTED_PROVIDERS:
+            raise ValueError(f"Unsupported provider {provider}, provided.")
+        self.config = {
+            "verbose_name": provider,
+            "model": model,
+            "api_key": api_key,
+        }
 
-    def configured(self):
-        """Get all available model configurations."""
-        return self._envs
+        self.config.update(_SUPPORTED_PROVIDERS[provider])
 
-    def not_configured(self) -> dict[str, tuple[str]]:
-        """Get all un-configured model configurations."""
-        not_configured = {}
+        with self._config_file.open("w", encoding="utf-8") as f:
+            json.dump(self.config, f, indent=2)
 
-        for provider in self._default_api_config:
-            if provider.lower() not in self._envs:
-                not_configured[provider] = self._default_api_config[provider]
+        LLM.create_model(self.config)
 
-        return not_configured
+    @property
+    def configured(self) -> bool:
+        """Check if api has been configured."""
+        return bool(LLM.llm)
 
 
 api_config = APIConfig()

@@ -5,13 +5,17 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "anthropic>=0.64.0",
+    "google-genai>=1.32.0",
     "langchain>=0.3.27",
     "langchain-anthropic>=0.3.19",
     "langchain-core>=0.3.72",
     "langchain-google-genai>=2.1.8",
     "langchain-openai>=0.3.30",
     "langgraph>=0.6.2",
+    "openai>=1.100.1",
     "python-dotenv>=1.1.1",
+    "requests>=2.32.4",
     "textual-autocomplete>=4.0.5",
     "textual[syntax]>=5.2.0",
 ]
@@ -39,3 +43,12 @@ packages = ["src/speech_cli"]
 
 [tool.hatch.build.targets.wheel.sources]
 "src/speech_cli" = "speech_cli"
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+tag_format = "$version"
+version_scheme = "semver2"
+version_provider = "uv"
+update_changelog_on_bump = true
+major_version_zero = true
+

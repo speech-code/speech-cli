@@ -1,9 +1,20 @@
+from __future__ import annotations
+
+import logging
 import os
 import platform
-from typing import Any
+from pathlib import Path
+from typing import TYPE_CHECKING, Any
 
-from langchain_core.prompt_values import PromptValue
+import requests
 from langchain_core.prompts import ChatPromptTemplate
+
+if TYPE_CHECKING:
+    from typing import Any
+
+    from langchain_core.prompt_values import PromptValue
+
+logger = logging.getLogger(__name__)
 
 
 def create_prompt(system_message: str, *args: str, **kwargs: Any) -> PromptValue:
@@ -49,3 +60,28 @@ def get_system_info():
     """.format(**info)
 
     return markdown
+
+
+def read_hlc_file():
+    """Read the HLC.json file."""
+    file = Path.cwd() / "HLC.json"
+
+    if file.exists():
+        with file.open(encoding="utf-8") as f:
+            content = f.read()
+
+        return content
+
+
+def connected_to_internet() -> bool:
+    """Check if user has internet connectivity."""
+    url = "https://google.com"
+    status_code = 200
+
+    try:
+        response = requests.get(url, timeout=15)
+        logger.debug("The response: %r", response)
+        return response.status_code == status_code
+    except Exception as _err:
+        logger.debug("The response: %r", _err)
+        return False

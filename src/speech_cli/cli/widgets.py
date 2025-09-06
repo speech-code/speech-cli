@@ -3,6 +3,7 @@ import logging
 from langchain_core.messages import ToolMessage
 from langgraph.prebuilt.interrupt import HumanResponse
 from langgraph.types import Interrupt
+from textual import work
 from textual.app import ComposeResult
 from textual.containers import Horizontal, Vertical
 from textual.message import Message
@@ -171,6 +172,7 @@ class AgentResponse(Vertical):
             await self.mount(self.ai_message_widget)
         else:
             await self.ai_message_widget.update(ai_message)
+            self.ai_message_widget.scroll_end()
 
     async def watch_tool_call_message(
         self, tool_call_message: ToolMessage | ToolCall
@@ -217,31 +219,72 @@ class AgentResponse(Vertical):
         await self.mount(Label(error_message, classes="exception error"))
 
 
-class ConfigureProvider(Horizontal):
+class APIConfig(Horizontal):
     """A widget for configuring a model provider."""
 
     def compose(self) -> ComposeResult:
         """Composing  the widgets for this container."""
         self.provider_select = Select(
-            [(provider, provider) for provider in api_config.not_configured()],
+            [(provider, provider) for provider in api_config.supported_providers],
             prompt="Select provider",
             name="provider",
         )
         yield self.provider_select
 
-        self.model_select = Select([], prompt="Select model", name="model")
-        yield self.model_select
-
         self.api_input = Input(placeholder="Enter API Key", password=True)
         yield self.api_input
 
-    def on_select_changed(self, event: Select.Changed) -> None:
-        """Populate the available models for the selected provider."""
-        if event.select.name == "provider":
-            self.model_select.set_options(
-                [(model, model) for model in api_config.not_configured()[event.value]],
-            )
+        self.model_select = Select([], prompt="Select model", name="model")
+        yield self.model_select
+
+    async def on_input_changed(self, event: Input.Changed) -> None:
+        """Populate the model select widget with available models."""
+        if len(event.value) == 0:
+            return
+
+        if (provider := self.provider_select.value) is not Select.BLANK:
+            self.populate_model_select(provider, event.value)
+
+    async def on_select_changed(self, event: Select.Changed) -> None:
+        """Handle the select event."""
+        if event.value is Select.BLANK:
+            return
+
+        if event.select.name == "provider" and len(self.api_input.value) > 0:
+            self.populate_model_select(event.value, self.api_input.value)
+
+    @work(exclusive=True)
+    async def populate_model_select(self, provider: str, api_key: str):
+        """Retrieve and populate the models select for the selected provider.
+
+        Args:
+            provider (str): Selected provider.
+            api_key (str): Provided api_key.
+
+        """
+        self.model_select.set_options(
+            [(model, model) for model in api_config.get_models(provider, api_key)],
+        )
+
+    @property
+    def all_widgets_has_a_value(self) -> bool:
+        """Check if all widgets has a value."""
+        if len(self.api_input.value) == 0:
+            return False
+
+        for value in (
+            self.provider_select.value,
+            self.model_select.value,
+        ):
+            if value is Select.BLANK:
+                return False
+
+        return True
 
     def get_values(self) -> tuple[str, str, str]:
         """Return the given api config."""
-        return self.provider_select.value, self.model_select.value, self.api_input.value
+        return (
+            self.provider_select.value,
+            self.model_select.value,
+            self.api_input.value,
+        )

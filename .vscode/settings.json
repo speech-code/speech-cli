@@ -13,4 +13,6 @@
   },
   "autoDocstring.includeExtendedSummary": true,
   "vscode-json-editor.theme": "light",
+  "cSpell.language": "en,en-GB",
+  "cSpell.words": ["ainvoke", "astream", "checkpointer", "ispkg", "tcss"]
 }

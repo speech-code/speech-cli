@@ -11,7 +11,7 @@ Input {
     box-sizing: content-box;
 }
 
-ConfigureProvider {
+APIConfig {
   width: auto;
   height: auto;
   background: $surface;
@@ -20,11 +20,11 @@ ConfigureProvider {
   # align: center middle;
 }
 
-ConfigureProvider > Input {
+APIConfig > Input {
   width: 16;
 }
 
-ConfigureProvider > Select {
+APIConfig > Select {
   width: 24;
 }
 

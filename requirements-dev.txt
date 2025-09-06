@@ -43,12 +43,15 @@ annotated-types==0.7.0 \
 anthropic==0.64.0 \
     --hash=sha256:3d496c91a63dff64f451b3e8e4b238a9640bf87b0c11d0b74ddc372ba5a3fe58 \
     --hash=sha256:6f5f7d913a6a95eb7f8e1bda4e75f76670e8acd8d4cd965e02e2a256b0429dd1
-    # via langchain-anthropic
+    # via
+    #   langchain-anthropic
+    #   speech-cli
 anyio==4.9.0 \
     --hash=sha256:673c0c244e15788651a4ff38710fea9675823028a6f08a5eda409e0c9840a028 \
     --hash=sha256:9f76d541cad6e36af7beb62e978876f3b41e3e04f2c1fbf0884604c0a9c4d93c
     # via
     #   anthropic
+    #   google-genai
     #   httpx
     #   openai
 attrs==25.3.0 \
@@ -183,6 +186,11 @@ google-auth==2.40.3 \
     # via
     #   google-ai-generativelanguage
     #   google-api-core
+    #   google-genai
+google-genai==1.32.0 \
+    --hash=sha256:349da3f5ff0e981066bd508585fcdd308d28fc4646f318c8f6d1aa6041f4c7e3 \
+    --hash=sha256:c0c4b1d45adf3aa99501050dd73da2f0dea09374002231052d81a6765d15e7f6
+    # via speech-cli
 googleapis-common-protos==1.70.0 \
     --hash=sha256:0e1b44e0ea153e6594f9f394fef15193a68aaaea2d843f83e2742717ca753257 \
     --hash=sha256:b8bfcca8c25a2bb253e0e0b0adaf8c00773e5e6af6fd92397576680b807e0fd8
@@ -240,6 +248,7 @@ httpx==0.28.1 \
     --hash=sha256:d909fcccc110f8c7faf814ca82a9a4d816bc5a6dbfea25d6591d6985b8ba59ad
     # via
     #   anthropic
+    #   google-genai
     #   langgraph-sdk
     #   langsmith
     #   openai
@@ -463,7 +472,9 @@ nodeenv==1.9.1 \
 openai==1.100.1 \
     --hash=sha256:2e8224caaf3136c58e30e6b3984fd7a8e6da0931d2c36fbbb7d668e5c11db914 \
     --hash=sha256:3e9ae652903e5120514e544af2426334141404657cdcdb6dc6845fc243d66e66
-    # via langchain-openai
+    # via
+    #   langchain-openai
+    #   speech-cli
 orjson==3.11.1 \
     --hash=sha256:08c6a762fca63ca4dc04f66c48ea5d2428db55839fec996890e1bfaf057b658c \
     --hash=sha256:0eacdfeefd0a79987926476eb16e0245546bedeb8febbbbcf4b653e79257a8e4 \
@@ -598,6 +609,7 @@ pydantic==2.11.7 \
     --hash=sha256:dde5df002701f6de26248661f6835bbe296a47bf73990135c7d07ce741b9623b
     # via
     #   anthropic
+    #   google-genai
     #   langchain
     #   langchain-anthropic
     #   langchain-core
@@ -686,9 +698,11 @@ requests==2.32.4 \
     --hash=sha256:27d0316682c8a29834d3264820024b62a36942083d52caf2f14c0591336d3422
     # via
     #   google-api-core
+    #   google-genai
     #   langchain
     #   langsmith
     #   requests-toolbelt
+    #   speech-cli
     #   tiktoken
 requests-toolbelt==1.0.0 \
     --hash=sha256:7681a0a3d047012b5bdc0ee37d7f8f07ebe76ab08caeccfc3921ce23c88d5bc6 \
@@ -726,7 +740,9 @@ sqlalchemy==2.0.43 \
 tenacity==9.1.2 \
     --hash=sha256:1169d376c297e7de388d18b4481760d478b0e99a777cad3a9c86e556f4b697cb \
     --hash=sha256:f77bf36710d8b73a50b2dd155c97b870017ad21afe6ab300326b0371b3b05138
-    # via langchain-core
+    # via
+    #   google-genai
+    #   langchain-core
 textual==5.2.0 \
     --hash=sha256:5df1ef970a88ac9a266cbcace098f595f22706990f2506f6e545d9bb55983f1d \
     --hash=sha256:6d4a77fddde7aa659acc25c3e14ed27ff75e125c6730c6f57263cf91b60e0d50
@@ -932,6 +948,7 @@ typing-extensions==4.14.1 \
     --hash=sha256:d1e1e3b58374dc93031d6eda2420a48ea44a36c2b4766a4fdeb3710755731d76
     # via
     #   anthropic
+    #   google-genai
     #   langchain-core
     #   openai
     #   pydantic
@@ -957,6 +974,21 @@ virtualenv==20.33.1 \
     --hash=sha256:07c19bc66c11acab6a5958b815cbcee30891cd1c2ccf53785a28651a0d8d8a67 \
     --hash=sha256:1b44478d9e261b3fb8baa5e74a0ca3bc0e05f21aa36167bf9cbf850e542765b8
     # via pre-commit
+websockets==15.0.1 \
+    --hash=sha256:0f3c1e2ab208db911594ae5b4f79addeb3501604a165019dd221c0bdcabe4db8 \
+    --hash=sha256:229cf1d3ca6c1804400b0a9790dc66528e08a6a1feec0d5040e8b9eb14422375 \
+    --hash=sha256:3c714d2fc58b5ca3e285461a4cc0c9a66bd0e24c5da9911e30158286c9b5be7f \
+    --hash=sha256:558d023b3df0bffe50a04e710bc87742de35060580a293c2a984299ed83bc4e4 \
+    --hash=sha256:595b6c3969023ecf9041b2936ac3827e4623bfa3ccf007575f04c5a6aa318c22 \
+    --hash=sha256:5a939de6b7b4e18ca683218320fc67ea886038265fd1ed30173f5ce3f8e85675 \
+    --hash=sha256:746ee8dba912cd6fc889a8147168991d50ed70447bf18bcda7039f7d2e3d9151 \
+    --hash=sha256:756c56e867a90fb00177d530dca4b097dd753cde348448a1012ed6c5131f8b7d \
+    --hash=sha256:82544de02076bafba038ce055ee6412d68da13ab47f0c60cab827346de828dee \
+    --hash=sha256:ba9e56e8ceeeedb2e080147ba85ffcd5cd0711b89576b83784d8605a7df455fa \
+    --hash=sha256:e09473f095a819042ecb2ab9465aee615bd9c2028e4ef7d933600a8401c79561 \
+    --hash=sha256:ee443ef070bb3b6ed74514f5efaa37a252af57c90eb33b956d35c8e9c10a1931 \
+    --hash=sha256:f7a866fbc1e97b5c617ee4116daaa09b722101d4a3c170c787450ba409f9736f
+    # via google-genai
 xxhash==3.5.0 \
     --hash=sha256:07fda5de378626e502b42b311b049848c2ef38784d0d67b6f30bb5008642f8eb \
     --hash=sha256:37889a0d13b0b7d739cfc128b1c902f04e32de17b33d74b637ad42f1c55101f6 \

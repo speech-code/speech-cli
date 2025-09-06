@@ -6,6 +6,7 @@ from speech_cli.core.tool_call import ToolCall
 from ._change_directory import change_directory
 from ._delete_file_content import delete_file_content
 from ._get_current_directory import get_current_directory
+from ._handoff import transfer_to_generator
 from ._insert_file_content import insert_file_content
 from ._list_directory import list_directory
 from ._read_file import read_file
@@ -81,6 +82,7 @@ __all__ = [
     "run_python_test",
     "get_command_history",
     "terminal_use",
+    "transfer_to_generator",
     "update_file_content",
     "write_file",
     "write_file",
